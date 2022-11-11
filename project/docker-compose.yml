@@ -1,0 +1,12 @@
+version: '3'
+services:
+  broker-service:
+    build:
+      context: ./../broker-service
+      dockerfile: ./../broker-service/Dockerfile
+    restart: always
+    ports:
+      - "8080:8080" # Map 8080 in our container to 8080 on the host machine
+    deploy:
+      mode: replicated
+      replicas: 1
