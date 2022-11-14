@@ -2,3 +2,4 @@ authApp
 brokerApp
 frontApp
 db/postgres
+node_modules
