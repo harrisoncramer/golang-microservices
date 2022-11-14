@@ -21,7 +21,11 @@ func (app *Config) routes() http.Handler {
 
 	r.Use(middleware.Heartbeat("/ping"))
 
+	/* Test endpoint */
 	r.Post("/", app.Broker)
+
+	/* Single entrypoint for all requests */
+	r.Post("/handle", app.HandleRequest)
 
 	return r
 }

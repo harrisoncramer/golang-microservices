@@ -40,7 +40,7 @@ func (app *Config) readJSON(w http.ResponseWriter, r *http.Request, data any) er
 }
 
 /* Writes JSON data, status, and headers to an http.ResponseWriter */
-func (app *Config) writeJson(w http.ResponseWriter, status int, data any, headers ...http.Header) error {
+func (app *Config) writeJSON(w http.ResponseWriter, status int, data any, headers ...http.Header) error {
 
 	/* Marshal the JSON data (convert to string) */
 	out, err := json.Marshal(data)
@@ -83,5 +83,5 @@ func (app *Config) errorJSON(w http.ResponseWriter, err error, status ...int) er
 	payload.Message = err.Error() /* The string of the error */
 
 	/* Use our utility function from above */
-	return app.writeJson(w, statusCode, payload)
+	return app.writeJSON(w, statusCode, payload)
 }
