@@ -1,4 +1,3 @@
-# Build production image
 FROM alpine:latest
 
 RUN mkdir /app
