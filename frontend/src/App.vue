@@ -1,31 +1,19 @@
 <template>
   <div class="test broker-test">
     <button @click="handleTestBroker">Test Broker</button>
-    <div>
-      Response: {{ brokerResponse }}
-    </div>
-    <div>
-      Error: {{ brokerErr ?? "No error" }}
+    <div v-if="brokerResponseCount">
+      <b>Response:</b> {{ brokerResponse }}
     </div>
     <div v-if="brokerResponseCount">
-      API Calls: {{ brokerResponseCount }}
+      <b>Error:</b> {{ brokerErr ?? "No error" }}
+    </div>
+    <div v-if="brokerResponseCount">
+      <b>API Calls:</b> {{ brokerResponseCount }}
     </div>
   </div>
 </template>
 
-<style scoped>
-.test {
-  gap: 1em;
-}
-.broker-test {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-}
-</style>
-
 <script setup lang="ts">
-
 import { ref } from 'vue'
 
 const brokerResponse = ref<string>()
@@ -50,5 +38,15 @@ async function handleTestBroker () {
     brokerErr.value = 'Could not reach broker'
   }
 }
-
 </script>
+
+<style scoped>
+.test {
+  gap: 1em;
+}
+.broker-test {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+</style>

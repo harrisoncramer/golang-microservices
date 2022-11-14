@@ -34,17 +34,12 @@ build_auth:
 	cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd/api
 	@echo "Done!"
 
-## build_front: builds the front-end binary
-build_front:
-	@echo "Building front end binary..."
-	cd ./front-end && env CGO_ENABLED=0 go build -o ${FRONT_END_BINARY} ./cmd/web
-	@echo "Done!"
-
-start: build_front
+## Starts Vite
+start:
 	@echo "Starting front end"
-	cd ./front-end && ./${FRONT_END_BINARY} &
+	cd ./frontend && npm run dev
 
+## Stops Vite
 stop:
 	@echo "Stopping frontend..."
-	@-pkill -SIGTERM -f "./${FRONT_END_BINARY}"
-	@echo "Stopped front end!"
+	@-pkill -SIGTERM -f "node .*/golang-microservices/frontend/node_modules/.bin/vite"
