@@ -26,6 +26,7 @@ debug: debug_check build_broker build_auth build_logger
 	@docker-compose -f docker/docker-compose.yml -f docker/docker-compose.debug.$$DEBUG.yml up --build -d
 	@echo "Debug mode started for ${DEBUG} service! Connect on port 9080."
 
+# debug_check: Checks whether, when running `make debug`, the DEBUG value has actually been set
 debug_check:
 	 @[ "${DEBUG}" ] && echo "Debugging ${DEBUG}..." || ( echo "DEBUG value is not set!"; exit 1 )
 
