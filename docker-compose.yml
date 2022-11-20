@@ -18,7 +18,7 @@ services:
       dockerfile: authentication-service.dockerfile
     restart: always
     ports:
-      - "8081:80" # Map 8081 on our machine to 80 on the container
+      - "8083:8083" # Map 8083 on our machine to 80 on the container
     environment:
       DSN: 'host=postgres port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5'
 
@@ -37,3 +37,15 @@ services:
     volumes:
       - ./db/postgres/:/var/lib/postgresql/data/ # Data Volume
       - ./db/scripts/setup.sql:/docker-entrypoint-initdb.d/01-setup.sql # Start up Script
+
+  mongo:
+    image: 'mongo:4.2.16-bionic'
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: logs
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./db/mongo/:/data/db
+
