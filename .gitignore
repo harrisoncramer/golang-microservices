@@ -3,4 +3,5 @@ brokerApp
 frontApp
 loggerApp
 db/postgres
+db/mongo
 node_modules
