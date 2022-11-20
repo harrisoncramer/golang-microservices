@@ -2,12 +2,13 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 )
 
-/* Authenticate extracts the email and password from a request and checks
-to see whether they match the DB */
+/*
+Authenticate extracts the email and password from a request and checks
+to see whether they match the DB.
+*/
 func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
 		Email    string `json:"email"`
@@ -33,8 +34,7 @@ func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 
 	payload := jsonResponse{
 		Error:   false,
-		Message: fmt.Sprintf("Logged in user %s", user.Email),
-		Data:    user,
+		Message: "",
 	}
 
 	app.writeJSON(w, http.StatusAccepted, payload)
