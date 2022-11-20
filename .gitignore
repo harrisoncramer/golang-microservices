@@ -1,7 +1,4 @@
-authApp
-brokerApp
-frontApp
-loggerApp
+**/*.bin
 db/postgres
 db/mongo
 node_modules

@@ -2,14 +2,14 @@ SHELL := /bin/bash
 
 FRONT_END_BINARY=frontApp
 
-BROKER_BINARY=brokerApp
-BROKER_DEBUG_BINARY=brokerDebug
+BROKER_BINARY=brokerApp.bin
+BROKER_DEBUG_BINARY=brokerDebug.bin
 
-AUTH_BINARY=authApp
-AUTH_DEBUG_BINARY=authDebug
+AUTH_BINARY=authApp.bin
+AUTH_DEBUG_BINARY=authDebug.bin
 
-LOGGER_BINARY=loggerApp
-LOGGER_DEBUG_BINARY=loggerDebug
+LOGGER_BINARY=loggerApp.bin
+LOGGER_DEBUG_BINARY=loggerDebug.bin
 
 # up: Starts all containers in the background without forcing a build
 up:
