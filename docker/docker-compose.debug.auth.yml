@@ -8,6 +8,6 @@ version: '3'
 services:
   authentication-service:
     ports:
-      - "9082:40000"
+      - "9080:40000"
     build:
       dockerfile: authentication-service.debug.dockerfile

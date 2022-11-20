@@ -2,6 +2,7 @@ version: '3'
 services:
 
   broker-service:
+    container_name: broker-service
     build:
       context: ./broker-service
       dockerfile: broker-service.dockerfile # Relative to the context location
@@ -13,6 +14,7 @@ services:
       replicas: 1
 
   logger-service:
+    container_name: logger-service
     build:
       context: ./logger-service
       dockerfile: logger-service.dockerfile # Relative to the context location
@@ -24,6 +26,7 @@ services:
       replicas: 1
 
   authentication-service:
+    container_name: authentication-service
     build:
       context: ./authentication-service
       dockerfile: authentication-service.dockerfile
@@ -32,6 +35,7 @@ services:
       DSN: 'host=postgres port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5'
 
   postgres:
+    container_name: postgres
     image: 'postgres:14.2'
     ports:
       - "5432:5432"
@@ -48,6 +52,7 @@ services:
       - ../db/scripts/setup.sql:/docker-entrypoint-initdb.d/01-setup.sql # Start up Script
 
   mongo:
+    container_name: mongo
     image: 'mongo:4.2.16-bionic'
     ports:
       - "27017:27017"

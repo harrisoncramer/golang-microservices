@@ -8,6 +8,6 @@ version: '3'
 services:
   logger-service:
     ports:
-      - "9082:40000"
+      - "9080:40000"
     build:
       dockerfile: logger-service.debug.dockerfile
