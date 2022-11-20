@@ -48,7 +48,7 @@ func main() {
 	}
 
 	/* Start web server */
-	log.Println("Starting service on port", webPort)
+	log.Println("Starting logger service...")
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
