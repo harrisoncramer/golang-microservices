@@ -1,0 +1,13 @@
+# This file is combined with the regular docker compose file
+# to bind debug ports to the local ports. Only one of these 
+# will actually be used, however, depending on what the 
+# value of the DEBUG environment variable is set when the 
+# make command is run.
+
+version: '3'
+services:
+  broker-service:
+    ports:
+      - "9080:40000"
+    build:
+      dockerfile: broker-service.debug.dockerfile

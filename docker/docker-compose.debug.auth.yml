@@ -6,16 +6,6 @@
 
 version: '3'
 services:
-  broker-service:
-    ports:
-      - "9080:40000"
-    build:
-      dockerfile: broker-service.debug.dockerfile
-  logger-service:
-    ports:
-      - "9081:40000"
-    build:
-      dockerfile: logger-service.debug.dockerfile
   authentication-service:
     ports:
       - "9082:40000"

@@ -32,9 +32,10 @@ up_build: build_broker build_auth build_logger
 # debug: stops docker-compose (if running) and builds all projects for debugging and starts docker compose
 debug: build_broker build_auth build_logger
 	@echo "Stopping docker images (if running)"
+	@echo $$DEBUG
 	docker-compose -f docker/docker-compose.yml down
-	@echo "Building and starting docker images (with $DEBUG in debug mode)"
-	docker-compose -f docker/docker-compose.yml -f docker/docker-compose.debug.yml up --build -d
+	@echo "Building and starting docker images (with ${DEBUG} in debug mode)"
+	docker-compose -f docker/docker-compose.yml -f docker/docker-compose.debug.$$DEBUG.yml up --build -d
 	@echo "Debug mode started!"
 
 # down: stop docker compose
