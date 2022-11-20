@@ -23,6 +23,16 @@ type LogPayload struct {
 	Data string `json:"data"`
 }
 
+/* Test handler for requests to the "/" route */
+func (app *Config) BrokerTest(w http.ResponseWriter, r *http.Request) {
+	payload := jsonResponse{
+		Error:   false,
+		Message: "Hit the broker",
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, payload)
+}
+
 /* Handles all other requests */
 func (app *Config) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	var requestPayload RequestPayload

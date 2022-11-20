@@ -14,7 +14,7 @@ import (
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
-const webPort = "8083"
+const webPort = "80"
 
 type Config struct {
 	DB     *sql.DB

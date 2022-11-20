@@ -45,7 +45,9 @@ async function handleTestBroker () {
   s.value = JSON.stringify(body, undefined, 4)
 
   try {
-    const response = await fetch("http://localhost:8080", body)
+    /* Normally all requests to the broker go through /handle, but for 
+    testing to see that it's up we can use the /test route */
+    const response = await fetch("http://localhost:8080/test", body)
     const json = await response.json()
     r.value = JSON.stringify(json, undefined, 4)
   } catch (err) {

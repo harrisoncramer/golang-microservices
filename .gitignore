@@ -1,5 +1,6 @@
 authApp
 brokerApp
 frontApp
+loggerApp
 db/postgres
 node_modules
