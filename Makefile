@@ -17,6 +17,14 @@ up_build: build_broker build_auth build_logger
 	docker-compose up --build -d
 	@echo "Docker images built and started!"
 
+## up_debug: stops docker-compose (if running) and builds all projects for debugging and starts docker compose
+debug: build_broker--debug build_auth--debug build_logger--debug
+	@echo "Stopping docker images (if running)"
+	docker-compose down
+	@echo "Building (when required) and starting docker images"
+	docker-compose -f docker-compose.debug.yml up --build -d
+	@echo "Docker images built and started!"
+
 ## down: stop docker compose
 down:
 	@echo "Stopping docker compose"
@@ -29,16 +37,34 @@ build_logger:
 	cd ./logger-service && env GOOS=linux CGO_ENABLED=0 go build -o ${LOGGER_BINARY} ./cmd/api
 	@echo "Done!"
 
+## build_logger--debug: builds the logger binary as a linux executable with debug flags
+build_logger--debug: 
+	@echo "Building logger binary..."
+	cd ./logger-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${LOGGER_BINARY} ./cmd/api
+	@echo "Done!"
+
 ## build_broker: builds the broker binary as a linux executable
 build_broker: 
 	@echo "Building broker binary..."
 	cd ./broker-service && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api
 	@echo "Done!"
 
+## build_broker--debug: builds the broker binary as a linux executable with debug flags
+build_broker--debug: 
+	@echo "Building broker binary..."
+	cd ./broker-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${BROKER_BINARY} ./cmd/api
+	@echo "Done!"
+
 ## build_auth: builds the auth binary as a linux executable
 build_auth: 
 	@echo "Building auth binary..."
 	cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd/api
+	@echo "Done!"
+
+## build_auth: builds the auth binary as a linux executable with debug flags
+build_auth--debug: 
+	@echo "Building auth binary..."
+	cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${AUTH_BINARY} ./cmd/api
 	@echo "Done!"
 
 ## Starts Vite
