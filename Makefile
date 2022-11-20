@@ -2,17 +2,31 @@ SHELL := /bin/bash
 
 # up: Starts all containers in the background without forcing a build
 up:
+	@echo "Stopping docker images (if running)"
+	@docker-compose -f docker/docker-compose.yml down
 	@echo "Starting docker images"
 	@docker-compose -f docker/docker-compose.yml up -d
 	@echo "Docker images started"
 
+# down: Stops all microservices
+down:
+	@echo "Stopping docker compose"
+	@docker-compose -f docker/docker-compose.yml down
+	@echo "Done!"
+
 # up_build: stops docker-compose (if running) and builds all projects and starts docker compose
-up_build: build_broker build_auth build_logger
+up_build: build
 	@echo "Stopping docker images (if running)"
 	@docker-compose -f docker/docker-compose.yml down
+	@echo "Starting docker images"
+	@docker-compose -f docker/docker-compose.yml up -d
+	@echo "Docker images started!"
+
+# build: builds all microservices
+build: build_broker build_auth build_logger
 	@echo "Building (when required) and starting docker images"
-	@docker-compose -f docker/docker-compose.yml up --build -d
-	@echo "Docker images built and started!"
+	@docker-compose -f docker/docker-compose.yml build
+	@echo "Docker images built!"
 
 # Passing an environment variable with DEBUG='authentication' will cause the authentication-service to be built with
 # the correct debugger flags and run via delve. The DEBUG value should always be the first part of the service's name,
@@ -26,15 +40,16 @@ debug: debug_check build_broker build_auth build_logger
 	@docker-compose -f docker/docker-compose.yml -f docker/docker-compose.debug.$$DEBUG.yml up --build -d
 	@echo "Debug mode started for ${DEBUG} service! Connect on port 9080."
 
+rebuild: rebuild_check
+	@docker-compose -f docker/docker-compose.yml build $$TARGET-service
+
+# rebuild_check: Checkes whether, when running `make rebuild`, the TARGET value has actually been set
+rebuild_check:
+	 @[ "${TARGET}" ] && echo "Rebuilding ${TARGET}..." || ( echo "TARGET value is not set!"; exit 1 )
+
 # debug_check: Checks whether, when running `make debug`, the DEBUG value has actually been set
 debug_check:
 	 @[ "${DEBUG}" ] && echo "Debugging ${DEBUG}..." || ( echo "DEBUG value is not set!"; exit 1 )
-
-# down: stop docker compose
-down:
-	@echo "Stopping docker compose"
-	@docker-compose -f docker/docker-compose.yml down
-	@echo "Done!"
 
 # build_logger: builds the logger binary as a linux executable
 build_logger: 
@@ -72,11 +87,11 @@ ps:
 	@docker-compose -f docker/docker-compose.yml ps
 
 # start: Starts up the Vite frontend
-start:
+vite:
 	@echo "Starting front end"
 	@cd ./frontend && npm run dev
 
 # stop: Stops the Vite frontend
-stop:
+vite-stop:
 	@echo "Stopping frontend..."
 	@-pkill -SIGTERM -f "node .*/golang-microservices/frontend/node_modules/.bin/vite"
