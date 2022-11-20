@@ -14,6 +14,6 @@ COPY --from=build-env /go/bin/dlv /bin
 
 RUN mkdir /app
 
-COPY ./brokerDebug.bin /app/brokerDebug.bin
+COPY ./broker.debug.bin /app/broker.debug.bin
 
-CMD ["dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/app/brokerDebug.bin"]
+CMD ["dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/app/broker.debug.bin"]

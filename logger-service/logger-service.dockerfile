@@ -2,6 +2,6 @@ FROM alpine:latest
 
 RUN mkdir /app
 
-COPY ./loggerApp.bin /app
+COPY ./logger.bin /app
 
-CMD ["/app/loggerApp.bin"]
+CMD ["/app/logger.bin"]

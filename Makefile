@@ -1,16 +1,5 @@
 SHELL := /bin/bash
 
-FRONT_END_BINARY=frontApp
-
-BROKER_BINARY=brokerApp.bin
-BROKER_DEBUG_BINARY=brokerDebug.bin
-
-AUTH_BINARY=authApp.bin
-AUTH_DEBUG_BINARY=authDebug.bin
-
-LOGGER_BINARY=loggerApp.bin
-LOGGER_DEBUG_BINARY=loggerDebug.bin
-
 # up: Starts all containers in the background without forcing a build
 up:
 	@echo "Starting docker images"
@@ -50,27 +39,27 @@ down:
 build_logger: 
 	@echo "Building logger binary..."
 	@if [ "${DEBUG}" = 'logger' ]; then \
-		cd ./logger-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${LOGGER_DEBUG_BINARY} ./cmd/api; \
+		cd ./logger-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o 'logger.debug.bin' ./cmd/api; \
 	else \
-		cd ./logger-service && env GOOS=linux CGO_ENABLED=0 go build -o ${LOGGER_BINARY} ./cmd/api; \
+		cd ./logger-service && env GOOS=linux CGO_ENABLED=0 go build -o 'logger.bin' ./cmd/api; \
 	fi
 
 # build_broker: builds the broker binary as a linux executable
 build_broker: 
 	@echo "Building broker binary..."
 	@if [ "${DEBUG}" = 'broker' ]; then \
-		cd ./broker-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${BROKER_DEBUG_BINARY} ./cmd/api; \
+		cd ./broker-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o 'broker.debug.bin' ./cmd/api; \
 	else \
-		cd ./broker-service && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api; \
+		cd ./broker-service && env GOOS=linux CGO_ENABLED=0 go build -o 'broker.bin' ./cmd/api; \
 	fi
 
 # build_auth: builds the auth binary as a linux executable
 build_auth: 
 	@echo "Building auth binary..."
 	@if [ "${DEBUG}" = 'authentication' ]; then \
-		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${AUTH_DEBUG_BINARY} ./cmd/api; \
+		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o 'authentication.debug.bin' ./cmd/api; \
 	else \
-		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd/api; \
+		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o 'authentication.bin' ./cmd/api; \
 	fi
 
 # logs: shows logs from the containers

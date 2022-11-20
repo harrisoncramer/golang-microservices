@@ -14,6 +14,6 @@ COPY --from=build-env /go/bin/dlv /bin
 
 RUN mkdir /app
 
-COPY ./authDebug.bin /app/authDebug.bin
+COPY ./authentication.debug.bin /app/authentication.bin
 
-CMD ["dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/app/authDebug.bin"]
+CMD ["dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/app/authentication.bin"]

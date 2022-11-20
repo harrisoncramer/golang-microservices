@@ -14,6 +14,6 @@ COPY --from=build-env /go/bin/dlv /bin
 
 RUN mkdir /app
 
-COPY ./loggerDebug.bin /app/loggerDebug.bin
+COPY ./logger.debug.bin /app/logger.debug.bin
 
-CMD ["dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/app/loggerDebug.bin"]
+CMD ["dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/app/logger.debug.bin"]
