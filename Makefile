@@ -25,9 +25,9 @@ up_build: build_broker build_auth build_logger
 	@docker-compose -f docker/docker-compose.yml up --build -d
 	@echo "Docker images built and started!"
 
-# Passing an environment variable with DEBUG='broker-service' will cause the broker service to be built with
-# the correct debugger flags and run via delve. The port of the exposed application can then be connected
-# to with a debugger, see the `docker-compose.debug.yml` file for the correct port of the service.
+# Passing an environment variable with DEBUG='authentication' will cause the authentication-service to be built with
+# the correct debugger flags and run via delve. The DEBUG value should always be the first part of the service's name,
+# prior to the `-service` suffix. Delve will the be exposed on port 9080 locally for connection.
 
 # debug: stops docker-compose (if running) and builds project specified by DEBUG value with docker-compose
 debug: debug_check build_broker build_auth build_logger
@@ -49,7 +49,7 @@ down:
 # build_logger: builds the logger binary as a linux executable
 build_logger: 
 	@echo "Building logger binary..."
-	@if [ "${DEBUG}" = 'auth' ]; then \
+	@if [ "${DEBUG}" = 'logger' ]; then \
 		cd ./logger-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${LOGGER_DEBUG_BINARY} ./cmd/api; \
 	else \
 		cd ./logger-service && env GOOS=linux CGO_ENABLED=0 go build -o ${LOGGER_BINARY} ./cmd/api; \
@@ -58,7 +58,7 @@ build_logger:
 # build_broker: builds the broker binary as a linux executable
 build_broker: 
 	@echo "Building broker binary..."
-	@if [ "${DEBUG}" = 'auth' ]; then \
+	@if [ "${DEBUG}" = 'broker' ]; then \
 		cd ./broker-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${BROKER_DEBUG_BINARY} ./cmd/api; \
 	else \
 		cd ./broker-service && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api; \
@@ -67,7 +67,7 @@ build_broker:
 # build_auth: builds the auth binary as a linux executable
 build_auth: 
 	@echo "Building auth binary..."
-	@if [ "${DEBUG}" = 'auth' ]; then \
+	@if [ "${DEBUG}" = 'authentication' ]; then \
 		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o ${AUTH_DEBUG_BINARY} ./cmd/api; \
 	else \
 		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd/api; \
