@@ -53,7 +53,7 @@ rebuild_check:
 
 # restart: Rebuilds and restarts the service
 restart: restart_check
-	@docker-compose -f docker/docker-compose.yml up -d $$SERVICE-service
+	@docker-compose -f docker/docker-compose.yml up -d --build $$SERVICE-service
 
 # restart_check: Checks whether, when running `make restart`, the SERVICE value has actually been set
 restart_check:
