@@ -4,7 +4,7 @@ services:
   broker-service:
     container_name: broker-service
     build:
-      context: ./broker-service
+      context: ../broker-service
       dockerfile: broker-service.dockerfile # Relative to the context location
     restart: always
     ports:
@@ -16,7 +16,7 @@ services:
   logger-service:
     container_name: logger-service
     build:
-      context: ./logger-service
+      context: ../logger-service
       dockerfile: logger-service.dockerfile # Relative to the context location
     restart: always
     ports:
@@ -28,7 +28,7 @@ services:
   authentication-service:
     container_name: authentication-service
     build:
-      context: ./authentication-service
+      context: ../authentication-service
       dockerfile: authentication-service.dockerfile
     restart: always
     environment:
