@@ -51,6 +51,14 @@ rebuild: rebuild_check
 rebuild_check:
 	 @[ "${SERVICE}" ] && echo "Rebuilding ${SERVICE}..." || ( echo "SERVICE value is not set!"; exit 1 )
 
+# restart: Rebuilds and restarts the service
+restart: restart_check
+	@docker-compose -f docker/docker-compose.yml up -d $$SERVICE-service
+
+# restart_check: Checks whether, when running `make restart`, the SERVICE value has actually been set
+restart_check:
+	 @[ "${SERVICE}" ] && echo "Restarting ${SERVICE}..." || ( echo "SERVICE value is not set!"; exit 1 )
+
 # build_logger: builds the logger binary as a linux executable
 build_logger: 
 	@echo "Building logger binary..."
@@ -80,7 +88,7 @@ build_auth:
 
 # logs: shows logs from the containers
 logs:
-	@docker-compose -f docker/docker-compose.yml logs
+	@docker-compose -f docker/docker-compose.yml logs --follow
 
 # ps: shows currently running docker processes
 ps:

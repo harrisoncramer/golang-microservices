@@ -20,7 +20,7 @@ services:
       dockerfile: logger-service.dockerfile # Relative to the context location
     restart: always
     ports:
-      - "8081:8081" # Map 8081 on our machine to 8081 on the container
+      - "8081:80" # Map 8081 on our machine to 8081 on the container
     deploy:
       mode: replicated
       replicas: 1
