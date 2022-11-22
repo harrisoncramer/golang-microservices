@@ -33,7 +33,7 @@ build: build_broker build_auth build_logger build_mail
 # prior to the `-service` suffix. Delve will the be exposed on port 9080 locally for connection.
 
 # debug: stops docker-compose (if running) and builds project specified by SERVICE value with docker-compose
-debug: debug_check build_broker build_auth build_logger
+debug: debug_check build_broker build_auth build_logger build_mail
 	@echo "Stopping docker images (if running)"
 	@docker-compose -f docker/docker-compose.yml down
 	@echo "Building and starting docker images (with ${SERVICE} in debug mode)"

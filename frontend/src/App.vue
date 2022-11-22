@@ -4,6 +4,7 @@
       <button @click="handleTestBroker">Test Broker</button>
       <button @click="handleTestAuth">Test Auth</button>
       <button @click="handleTestLogger">Test Logger</button>
+      <button @click="handleTestMail">Test Mail**</button>
     </div>
     <div class="content" v-if="!loading">
       <div v-if="s">
@@ -102,6 +103,32 @@ async function handleTestAuth () {
     const response = await fetch("http://localhost:8080/handle", body)
     const json = await response.json()
     r.value = JSON.stringify(json, null, 4)
+  } catch (err) {
+    e.value = JSON.stringify(err, Object.getOwnPropertyNames(err))
+  } finally {
+    loading.value = false
+  }
+}
+
+async function handleTestMail () {
+  reset()
+  loading.value = true
+  const payload = { action: 'mail', log: { from: 'me@example.com', to: 'you@there.com', subject: 'Test subject', message: 'Hello world!' } }
+  const headers = new Headers()
+  headers.append('Content-Type', 'application/json')
+
+  const body = {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers,
+  }
+
+  s.value = JSON.stringify(body, undefined, 4)
+
+  try {
+    const response = await fetch("http://localhost:8080/handle", body)
+    const json = await response.json()
+    r.value = JSON.stringify(json, undefined, 4)
   } catch (err) {
     e.value = JSON.stringify(err, Object.getOwnPropertyNames(err))
   } finally {

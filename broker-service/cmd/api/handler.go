@@ -184,6 +184,20 @@ func (app *Config) sendMail(w http.ResponseWriter, msg MailPayload) {
 
 	defer response.Body.Close()
 
+	/* Decode the json and ensure no errors are passed */
+	var jsonFromService jsonResponse
+	err = json.NewDecoder(response.Body).Decode(&jsonFromService)
+
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	if jsonFromService.Error {
+		app.errorJSON(w, errors.New(jsonFromService.Message))
+		return
+	}
+
 	if response.StatusCode != http.StatusAccepted {
 		app.errorJSON(w, errors.New("Error calling mail service"))
 		return
