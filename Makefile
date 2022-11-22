@@ -86,14 +86,6 @@ build_auth:
 		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o 'authentication.bin' ./cmd/api; \
 	fi
 
-# logs: shows logs from the containers
-logs:
-	@docker-compose -f docker/docker-compose.yml logs --follow
-
-# ps: shows currently running docker processes
-ps:
-	@docker-compose -f docker/docker-compose.yml ps
-
 # start: Starts up the Vite frontend
 vite:
 	@echo "Starting front end"

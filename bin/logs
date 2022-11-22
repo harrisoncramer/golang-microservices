@@ -1,0 +1,11 @@
+#!/bin/bash
+# log: tails the logs of the specified service
+
+if [[ $# = 1 ]]; then
+  echo "$1-service"
+  PID=$(docker ps | grep "$1-service" | awk '{print $1;}')
+  docker logs "${PID}" --follow
+else
+  echo "No service provided"
+  exit 1
+fi

@@ -1,0 +1,4 @@
+#!/bin/bash
+# ps: shows currently running docker processes
+
+docker-compose -f docker/docker-compose.yml ps
