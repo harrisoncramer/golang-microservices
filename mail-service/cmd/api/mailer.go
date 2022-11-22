@@ -3,8 +3,10 @@ package main
 import (
 	"bytes"
 	"html/template"
+	"time"
 
 	"github.com/vanng822/go-premailer/premailer"
+	mail "github.com/xhit/go-simple-mail/v2"
 )
 
 /* For the mail server we'll be communicating with */
@@ -58,10 +60,55 @@ func (m *Mail) SendSMTPMessage(msg Message) error {
 		return err
 	}
 
-	// TODO: Create Mail Server to Send the Message (15:51)
+	/* Create mail host */
+	server := mail.NewSMTPClient()
+	server.Host = m.Host
+	server.Port = m.Port
+	server.Username = m.Username
+	server.Password = m.Password
+	server.Encryption = m.getEncryption(m.Encryption)
+	server.KeepAlive = false
+	server.ConnectTimeout = 10 * time.Second
+	server.SendTimeout = 10 * time.Second
+
+	/* Create mail client and connect to the host */
+	smtpClient, err := server.Connect()
+	if err != nil {
+		return err
+	}
+
+	email := mail.NewMSG()
+	email.SetFrom(msg.From).
+		AddTo(msg.To).
+		SetSubject(msg.Subject).
+		SetBody(mail.TextPlain, plainMessage).
+		AddAlternative(mail.TextHTML, formattedMessage)
+
+	for _, x := range msg.Attachments {
+		email.AddAttachment(x)
+	}
+
+	err = email.Send(smtpClient)
+	if err != nil {
+		return err
+	}
 
 	return nil
 
+}
+
+/* Helper function to get encryption. Using different values in prod/dev */
+func (m *Mail) getEncryption(encryption string) mail.Encryption {
+	switch encryption {
+	case "tls":
+		return mail.EncryptionSTARTTLS
+	case "ssl":
+		return mail.EncryptionSSLTLS
+	case "none", "":
+		return mail.EncryptionNone
+	default:
+		return mail.EncryptionSTARTTLS
+	}
 }
 
 func (m *Mail) buildHTMLMessage(msg Message) (string, error) {
