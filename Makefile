@@ -23,7 +23,7 @@ up_build: build
 	@echo "Docker images started!"
 
 # build: builds all microservices
-build: build_broker build_auth build_logger
+build: build_broker build_auth build_logger build_mail
 	@echo "Building (when required) and starting docker images"
 	@docker-compose -f docker/docker-compose.yml build
 	@echo "Docker images built!"
@@ -84,6 +84,15 @@ build_auth:
 		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o 'authentication.debug.bin' ./cmd/api; \
 	else \
 		cd ./authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o 'authentication.bin' ./cmd/api; \
+	fi
+
+# build_mail: builds the mail service as a linux executable
+build_mail:
+	@echo "Building mail binary..."
+	@if [ "${SERVICE}" = 'mail' ]; then \
+		cd ./mail-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o 'mail.debug.bin' ./cmd/api; \
+	else \
+		cd ./mail-service && env GOOS=linux CGO_ENABLED=0 go build -o 'mail.bin' ./cmd/api; \
 	fi
 
 # start: Starts up the Vite frontend
