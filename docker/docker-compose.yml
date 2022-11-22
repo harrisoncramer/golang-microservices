@@ -8,7 +8,7 @@ services:
       dockerfile: broker-service.dockerfile # Relative to the context location
     restart: always
     ports:
-      - "8080:8080" # Map 8080 on our machine to 8080 on the container
+      - "8080:80" # Map 8080 on our machine to 8080 on the container
     deploy:
       mode: replicated
       replicas: 1

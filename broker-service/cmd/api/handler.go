@@ -121,8 +121,10 @@ func (app *Config) authenticate(w http.ResponseWriter, a AuthPayload) {
 	/* Make sure we get back the correct status code */
 	if response.StatusCode == http.StatusUnauthorized {
 		app.errorJSON(w, errors.New("Invalid credentials"))
+		return
 	} else if response.StatusCode != http.StatusAccepted {
 		app.errorJSON(w, errors.New("Error calling authentication service"))
+		return
 	}
 
 	/* Decode the json and ensure no errors are passed */
