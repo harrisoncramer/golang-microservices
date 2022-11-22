@@ -22,7 +22,7 @@ func (app *Config) routes() http.Handler {
 	r.Use(middleware.Heartbeat("/ping"))
 
 	/* Single entrypoint for all requests */
-	// r.Post("/handle", app.HandleRequest)
+	r.Post("/send", app.SendMail)
 
 	return r
 }
