@@ -113,7 +113,7 @@ async function handleTestAuth () {
 async function handleTestMail () {
   reset()
   loading.value = true
-  const payload = { action: 'mail', log: { from: 'me@example.com', to: 'you@there.com', subject: 'Test subject', message: 'Hello world!' } }
+  const payload = { action: 'mail', mail: { from: 'me@example.com', to: 'you@there.com', subject: 'Test subject', message: 'Hello world!' } }
   const headers = new Headers()
   headers.append('Content-Type', 'application/json')
 
