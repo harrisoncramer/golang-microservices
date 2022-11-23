@@ -57,7 +57,7 @@ func (app *Config) HandleRequest(w http.ResponseWriter, r *http.Request) {
 		app.authenticate(w, requestPayload.Auth)
 	case "log":
 		app.logItem(w, requestPayload.Log)
-	case "mail": /* TODO: In production, remove this! */
+	case "mail":
 		if os.Getenv("APP_ENV") != "production" {
 			app.sendMail(w, requestPayload.Mail)
 		} else {
