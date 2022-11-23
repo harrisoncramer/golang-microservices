@@ -1,4 +1,6 @@
-version: '3'
+version: '3.4'
+x-common-variables: &common-variables
+  APP_ENV: production
 services:
 
   broker-service:
@@ -12,6 +14,7 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    environment: *common-variables
 
   logger-service:
     container_name: logger-service
@@ -24,6 +27,7 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    environment: *common-variables
 
   authentication-service:
     container_name: authentication-service
@@ -32,6 +36,7 @@ services:
       dockerfile: authentication-service.dockerfile
     restart: always
     environment:
+      <<: *common-variables
       DSN: 'host=postgres port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5'
 
   mail-service:
@@ -41,6 +46,7 @@ services:
       dockerfile: mail-service.dockerfile
     restart: always
     environment: 
+      <<: *common-variables
       MAIL_PORT: 1025
       MAIL_DOMAIN: localhost
       MAIL_HOST: mailhog
@@ -64,6 +70,7 @@ services:
       mode: replicated
       replicas: 1
     environment:
+      <<: *common-variables
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: users
@@ -77,6 +84,7 @@ services:
     ports:
       - "27017:27017"
     environment:
+      <<: *common-variables
       MONGO_INITDB_DATABASE: logs
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -84,6 +92,7 @@ services:
       - ../db/mongo/:/data/db
 
   mailhog:
+    environment: *common-variables
     image: 'mailhog/mailhog:latest'
     ports:
       - "1025:1025"

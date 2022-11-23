@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"os"
 )
 
 type RequestPayload struct {
@@ -57,7 +58,11 @@ func (app *Config) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	case "log":
 		app.logItem(w, requestPayload.Log)
 	case "mail": /* TODO: In production, remove this! */
-		app.sendMail(w, requestPayload.Mail)
+		if os.Getenv("APP_ENV") != "production" {
+			app.sendMail(w, requestPayload.Mail)
+		} else {
+			app.errorJSON(w, errors.New("Mail service not available"))
+		}
 
 	default:
 		app.errorJSON(w, errors.New("Unknown action"))
