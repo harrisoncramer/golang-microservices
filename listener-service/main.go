@@ -42,7 +42,7 @@ func connect() (*amqp.Connection, error) {
 	backoff := time.Second * 1
 
 	for {
-		connAttempt, err := amqp.Dial("amqp://guest:guest@localhost")
+		connAttempt, err := amqp.Dial("amqp://guest:guest@rabbitmq")
 		if err != nil {
 			fmt.Println("RabbitMQ not ready")
 			retries++

@@ -23,7 +23,7 @@ up_build: build
 	@echo "Docker images started!"
 
 # build: builds all microservices
-build: build_broker build_auth build_logger build_mail
+build: build_broker build_auth build_logger build_mail build_listener
 	@echo "Building (when required) and starting docker images"
 	@docker-compose -f docker/docker-compose.yml build
 	@echo "Docker images built!"
@@ -33,7 +33,7 @@ build: build_broker build_auth build_logger build_mail
 # prior to the `-service` suffix. Delve will the be exposed on port 9080 locally for connection.
 
 # debug: stops docker-compose (if running) and builds project specified by SERVICE value with docker-compose
-debug: debug_check build_broker build_auth build_logger build_mail
+debug: debug_check build_broker build_auth build_logger build_mail build_listener
 	@echo "Stopping docker images (if running)"
 	@docker-compose -f docker/docker-compose.yml down
 	@echo "Building and starting docker images (with ${SERVICE} in debug mode)"
@@ -93,6 +93,15 @@ build_mail:
 		cd ./mail-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o 'mail.debug.bin' ./cmd/api; \
 	else \
 		cd ./mail-service && env GOOS=linux CGO_ENABLED=0 go build -o 'mail.bin' ./cmd/api; \
+	fi
+
+# build_mail: builds the mail service as a linux executable
+build_listener:
+	@echo "Building listener binary..."
+	@if [ "${SERVICE}" = 'listener' ]; then \
+		cd ./listener-service && env GOOS=linux CGO_ENABLED=0 go build -gcflags="all=-N -l" -o 'listener.debug.bin' .; \
+	else \
+		cd ./listener-service && env GOOS=linux CGO_ENABLED=0 go build -o 'listener.bin' .; \
 	fi
 
 # start: Starts up the Vite frontend

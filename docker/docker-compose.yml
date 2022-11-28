@@ -35,9 +35,23 @@ services:
       context: ../authentication-service
       dockerfile: authentication-service.dockerfile
     restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
     environment:
       <<: *common-variables
       DSN: 'host=postgres port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5'
+
+  listener-service:
+    container_name: listener-service
+    build:
+      context: ../listener-service
+      dockerfile: listener-service.dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment: *common-variables
 
   mail-service:
     container_name: mail-service

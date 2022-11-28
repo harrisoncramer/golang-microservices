@@ -56,7 +56,7 @@ func (app *Config) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	case "auth":
 		app.authenticate(w, requestPayload.Auth)
 	case "log":
-		app.logItem(w, requestPayload.Log)
+		// DEPRECATED: app.logItem(w, requestPayload.Log)
 	case "mail":
 		if os.Getenv("APP_ENV") != "production" {
 			app.sendMail(w, requestPayload.Mail)
@@ -70,6 +70,7 @@ func (app *Config) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/* DEPRECATED: Sends a message to the logger-service and writes success message to requester */
 func (app *Config) logItem(w http.ResponseWriter, entry LogPayload) {
 
 	/* Create some JSON to send to the logger microservice */
@@ -111,6 +112,7 @@ func (app *Config) logItem(w http.ResponseWriter, entry LogPayload) {
 	app.writeJSON(w, http.StatusAccepted, payload)
 }
 
+/* Authenticates client or rejects authentication request */
 func (app *Config) authenticate(w http.ResponseWriter, a AuthPayload) {
 
 	/* Create some JSON to send to the auth microservice */
@@ -166,6 +168,7 @@ func (app *Config) authenticate(w http.ResponseWriter, a AuthPayload) {
 
 }
 
+/* Sends mail with given message to the recipient specified */
 func (app *Config) sendMail(w http.ResponseWriter, msg MailPayload) {
 	jsonData, _ := json.MarshalIndent(msg, "", "\t")
 
