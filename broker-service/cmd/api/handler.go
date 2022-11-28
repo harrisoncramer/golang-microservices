@@ -1,6 +1,7 @@
 package main
 
 import (
+	"broker/event"
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -57,6 +58,7 @@ func (app *Config) HandleRequest(w http.ResponseWriter, r *http.Request) {
 		app.authenticate(w, requestPayload.Auth)
 	case "log":
 		// DEPRECATED: app.logItem(w, requestPayload.Log)
+		app.logEventViaRabbit(w, requestPayload.Log)
 	case "mail":
 		if os.Getenv("APP_ENV") != "production" {
 			app.sendMail(w, requestPayload.Mail)
@@ -68,6 +70,41 @@ func (app *Config) HandleRequest(w http.ResponseWriter, r *http.Request) {
 		app.errorJSON(w, errors.New("Unknown action"))
 
 	}
+}
+
+func (app *Config) logEventViaRabbit(w http.ResponseWriter, entry LogPayload) {
+	err := app.pushToQueue(entry.Name, entry.Data)
+	if err != nil {
+		app.errorJSON(w, err)
+	}
+
+	response := jsonResponse{
+		Error:   false,
+		Message: "Logged via RabbitMQ",
+	}
+
+	app.writeJSON(w, http.StatusAccepted, response)
+}
+
+func (app *Config) pushToQueue(name, msg string) error {
+	emitter, err := event.NewEventEmitter(app.Rabbit)
+	if err != nil {
+		return err
+	}
+
+	payload := LogPayload{
+		Name: name,
+		Data: msg,
+	}
+
+	jsonData, _ := json.MarshalIndent(payload, "", "\t")
+
+	err = emitter.Push(string(jsonData), "log.INFO")
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /* DEPRECATED: Sends a message to the logger-service and writes success message to requester */
